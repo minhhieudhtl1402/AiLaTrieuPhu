@@ -30,6 +30,32 @@
 
 
             <ImageView
+                android:id="@+id/iv_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="136dp"
+                android:layout_marginTop="34dp"
+                android:src="@drawable/hepl"
+                app:layout_constraintBottom_toTopOf="@+id/tv_order_question"
+                app:layout_constraintEnd_toStartOf="@+id/iv_percent"
+                app:layout_constraintHorizontal_bias="0.565"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/iv_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="72dp"
+                android:src="@drawable/call"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_help"
+                app:layout_constraintEnd_toStartOf="@+id/iv_help"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_help"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,18 +70,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font1"
-                android:text=""
+                android:text="ffffff"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/imageView3"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.505"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3"
-                app:layout_constraintVertical_bias="0.357" />
+                app:layout_constraintStart_toEndOf="@id/imageView3"
+                app:layout_constraintTop_toTopOf="@id/imageView3" />
+
+            <ImageView
+                android:id="@+id/iv_hand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/hand"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_call"
+                app:layout_constraintEnd_toStartOf="@+id/iv_call"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_call" />
 
             <TextView
 
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/font1"
@@ -71,7 +106,7 @@
                 android:id="@+id/tv_question"
                 android:layout_width="350dp"
                 android:layout_height="250dp"
-                android:layout_marginTop="104dp"
+                android:layout_marginTop="136dp"
                 android:background="@drawable/bg_question"
                 android:fontFamily="@font/font6"
                 android:gravity="center"
@@ -79,9 +114,34 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.454"
+                app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+            <ImageView
+                android:id="@+id/iv_quit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/x"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_percent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.929"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_percent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageView
+                android:id="@+id/iv_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="220dp"
+                android:src="@drawable/percent50"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_help"
+                app:layout_constraintEnd_toStartOf="@+id/iv_quit"
+                app:layout_constraintHorizontal_bias="0.656"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_help"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/tv_order_question"
@@ -103,7 +163,7 @@
                 android:id="@+id/answer_1"
                 android:layout_width="400dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="88dp"
+                android:layout_marginTop="64dp"
                 android:background="@drawable/bg_nomal"
                 android:fontFamily="@font/font7"
                 android:gravity="center_vertical"
@@ -113,6 +173,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_question" />
 
@@ -143,7 +204,7 @@
                 android:tag="3"
                 android:text="C:Laofddfdfdfdfdfdfdfdf"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/answer_2" />
@@ -163,6 +224,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/answer_3" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="21dp"
+                android:fontFamily="@font/font1"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 

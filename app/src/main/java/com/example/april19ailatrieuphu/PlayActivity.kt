@@ -1,7 +1,10 @@
 package com.example.april19ailatrieuphu
 
+import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,11 +22,11 @@ class PlayActivity : AppCompatActivity() {
     private lateinit var tvOrderQuestion: TextView
     private lateinit var tvMoney: TextView
     private var handler = Handler()
-
-
-    companion object {
-        const val questionName: String = "ques"
-    }
+    private lateinit var tvTime: TextView
+    private var num = 0
+    private var isClick = false
+    private lateinit var iv_percent50: ImageView
+    private lateinit var iv_call: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -36,8 +39,10 @@ class PlayActivity : AppCompatActivity() {
         tvQuestion = findViewById(R.id.tv_question)
         tvOrderQuestion = findViewById(R.id.tv_order_question)
         tvMoney = findViewById(R.id.tv_money)
-
+        tvTime = findViewById(R.id.tv_time)
         ivCircle = findViewById(R.id.iv_circle)
+        iv_percent50 = findViewById(R.id.iv_percent)
+        iv_call = findViewById(R.id.iv_call)
         val animation = AnimationUtils.loadAnimation(this, R.anim.spin_around_slow)
         ivCircle.animation = animation
         ivCircle.startAnimation(animation)
@@ -47,8 +52,92 @@ class PlayActivity : AppCompatActivity() {
         val databaseManager: DatabaseManager = DatabaseManager(this)
         val questions = databaseManager.queryQuestions()
         prepareAnswer(questions)
+        iv_call.setOnClickListener {
+            it.visibility = View.INVISIBLE
+            isClick = true
+            handler.postDelayed(Runnable {
+                MediaManager.start(this, R.raw.call)
 
+                MediaManager.mMediaPlayer.setOnCompletionListener {
+                    MediaManager.start(this, R.raw.help_call)
+                    handler.postDelayed(Runnable {
+                        MediaManager.start(this@PlayActivity, R.raw.help_callb)
+                    }, 1000)
+                    val dialog = Dialog(this@PlayActivity)
+                    dialog.setContentView(R.layout.layout_call)
+                    val iv1 = dialog.findViewById<ImageView>(R.id.iv_avatar1)
+                    val iv2 = dialog.findViewById<ImageView>(R.id.iv_avatar2)
+                    val iv3 = dialog.findViewById<ImageView>(R.id.iv_avatar3)
+                    val iv4 = dialog.findViewById<ImageView>(R.id.iv_avatar4)
+                    val currentQues = questions.get(currentQuestion)
+                    val trueCase: Int = currentQues.trueCase
+                    var myAnswer: String = ""
+                    when (trueCase) {
+                        1 -> myAnswer = "Đáp án của tôi là A"
+                        2 -> myAnswer = "Đáp án của tôi là B"
+                        3 -> myAnswer = "Đáp án của tôi là C"
+                        4 -> myAnswer = "Đáp án của tôi là D"
+                    }
+
+                    iv1.setOnClickListener {
+                        dialog.dismiss()
+                        createAnswerDialog(myAnswer)
+                    }
+                    iv2.setOnClickListener {
+                        dialog.dismiss()
+                        createAnswerDialog(myAnswer)
+                    }
+                    iv3.setOnClickListener {
+                        dialog.dismiss()
+                        createAnswerDialog(myAnswer)
+                    }
+                    iv4.setOnClickListener {
+                        dialog.dismiss()
+                        createAnswerDialog(myAnswer)
+                    }
+                    dialog.show()
+
+
+                }
+            }, 1000)
+
+        }
+
+        iv_percent50.setOnClickListener {
+            it.visibility = View.INVISIBLE
+            isClick = true
+            handler.postDelayed(Runnable {
+                val num = Random.nextInt(2)
+                when (num) {
+                    0 -> {
+                        MediaManager.start(this, R.raw.sound5050)
+                    }
+                    1 -> {
+                        MediaManager.start(this, R.raw.sound5050_2)
+                    }
+                }
+
+                val currentQues = questions.get(currentQuestion)
+                val trueCase: Int = currentQues.trueCase
+                val numbers = arrayListOf<Int>(1, 2, 3, 4)
+                numbers.remove(trueCase)
+                numbers.removeAt(Random.nextInt(3))
+                MediaManager.mMediaPlayer.setOnCompletionListener {
+                    for (item in numbers) {
+                        when (item) {
+                            1 -> answer1.visibility = View.INVISIBLE
+                            2 -> answer2.visibility = View.INVISIBLE
+                            3 -> answer3.visibility = View.INVISIBLE
+                            4 -> answer4.visibility = View.INVISIBLE
+                        }
+                    }
+                }
+
+            }, 2000)
+
+        }
         answer1.setOnClickListener {
+            isClick = true
             answer1.setBackgroundResource(R.drawable.bg_choose1)
             MediaManager.start(this, R.raw.ans_a)
             handler.postDelayed(Runnable {
@@ -57,6 +146,7 @@ class PlayActivity : AppCompatActivity() {
             checkAnswer(questions, 1)
         }
         answer2.setOnClickListener {
+            isClick = true
             answer2.setBackgroundResource(R.drawable.bg_choose1)
             MediaManager.start(this, R.raw.ans_b)
             handler.postDelayed({
@@ -67,6 +157,7 @@ class PlayActivity : AppCompatActivity() {
 
         }
         answer3.setOnClickListener {
+            isClick = true
             answer3.setBackgroundResource(R.drawable.bg_choose1)
             MediaManager.start(this, R.raw.ans_c)
             handler.postDelayed({
@@ -77,6 +168,7 @@ class PlayActivity : AppCompatActivity() {
 
         }
         answer4.setOnClickListener {
+            isClick = true
             answer4.setBackgroundResource(R.drawable.bg_choose1)
             MediaManager.start(this, R.raw.ans_d)
             handler.postDelayed({
@@ -94,6 +186,16 @@ class PlayActivity : AppCompatActivity() {
     }
 
     private fun prepareAnswer(questions: MutableList<Question>) {
+        isClick = false
+        num = 0
+        answer1.isClickable = true
+        answer2.isClickable = true
+        answer3.isClickable = true
+        answer4.isClickable = true
+        answer1.visibility = View.VISIBLE
+        answer2.visibility = View.VISIBLE
+        answer3.visibility = View.VISIBLE
+        answer4.visibility = View.VISIBLE
         val currentQues = questions.get(currentQuestion)
         var quesMedia: Int = 0
         var money: String = "0"
@@ -184,7 +286,49 @@ class PlayActivity : AppCompatActivity() {
         answer2.setBackgroundResource(R.drawable.bg_nomal)
         answer3.setBackgroundResource(R.drawable.bg_nomal)
         answer4.setBackgroundResource(R.drawable.bg_nomal)
+        handler.postDelayed(updateTime, 1000)
+    }
 
+    private var updateTime: Runnable = object : Runnable {
+        override fun run() {
+            num++
+            var time = 60 - num
+
+            if (isClick == false) {
+                tvTime.setText(time.toString())
+                handler.postDelayed(this, 1000)
+            }
+            if (time == 0) {
+                handler.removeCallbacksAndMessages(null)
+                MediaManager.start(this@PlayActivity, R.raw.out_of_time)
+                var dialog: Dialog = Dialog(this@PlayActivity)
+                dialog.setContentView(R.layout.layout_gift_feedback)
+                val tvDiaLogMoney = dialog.findViewById<TextView>(R.id.tv_money)
+                tvDiaLogMoney.setText(tvMoney.text)
+                val tvMain = dialog.findViewById<TextView>(R.id.tv_main_menu)
+                tvMain.setOnClickListener {
+                    val intent = Intent(this@PlayActivity, MainActivity::class.java)
+//                        dialog.dismiss()
+                    finish()
+//                        startActivity(intent)
+                }
+                dialog.show()
+            }
+        }
+
+    }
+
+    private fun createAnswerDialog(answer: String) {
+
+        val myDialog = Dialog(this@PlayActivity)
+        myDialog.setContentView(R.layout.layout_answer)
+        val tv_answer = myDialog.findViewById<TextView>(R.id.tv_answer)
+        tv_answer.setText(answer.toString())
+        val tv_exit = myDialog.findViewById<TextView>(R.id.tv_exit)
+        tv_exit.setOnClickListener {
+            myDialog.dismiss()
+        }
+        myDialog.show()
     }
 
     private fun checkAnswer(questions: MutableList<Question>, answer: Int) {
@@ -192,6 +336,10 @@ class PlayActivity : AppCompatActivity() {
         if (answer == 15) {
             finish()
         }
+        answer1.isClickable = false
+        answer2.isClickable = false
+        answer3.isClickable = false
+        answer4.isClickable = false
         if (answer == questions[currentQuestion].trueCase) {
 
 
@@ -211,6 +359,7 @@ class PlayActivity : AppCompatActivity() {
                 }
                 MediaManager.start(this, quesMedia)
                 currentQuestion++
+
                 handler.postDelayed(Runnable {
                     prepareAnswer(questions)
                 }, 3000)
@@ -240,7 +389,29 @@ class PlayActivity : AppCompatActivity() {
                     4 -> answer4.setBackgroundResource(R.drawable.bg_true1)
                 }
                 MediaManager.start(this@PlayActivity, quesMedia)
+                MediaManager.mMediaPlayer.setOnCompletionListener {
+                    var dialog: Dialog = Dialog(this)
+                    dialog.setContentView(R.layout.layout_gift_feedback)
+                    val tvDiaLogMoney = dialog.findViewById<TextView>(R.id.tv_money)
+                    tvDiaLogMoney.setText(tvMoney.text)
+                    val tvMain = dialog.findViewById<TextView>(R.id.tv_main_menu)
+                    tvMain.setOnClickListener {
+                        val intent = Intent(this, MainActivity::class.java)
+//                        dialog.dismiss()
+                        finish()
+//                        startActivity(intent)
+                    }
+                    dialog.show()
+                    handler.postDelayed(Runnable {
+                        MediaManager.start(this, R.raw.lose)
+                    }, 500)
+                }
+
+
             }, 6000)
+//            handler.postDelayed(Runnable {
+//
+//            },2000)
         }
     }
 
