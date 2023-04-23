@@ -394,10 +394,11 @@ class PlayActivity : AppCompatActivity() {
                     dialog.setContentView(R.layout.layout_gift_feedback)
                     val tvDiaLogMoney = dialog.findViewById<TextView>(R.id.tv_money)
                     tvDiaLogMoney.setText(tvMoney.text)
+                    dialog.setCanceledOnTouchOutside(false)
                     val tvMain = dialog.findViewById<TextView>(R.id.tv_main_menu)
                     tvMain.setOnClickListener {
                         val intent = Intent(this, MainActivity::class.java)
-//                        dialog.dismiss()
+                        dialog.dismiss()
                         finish()
 //                        startActivity(intent)
                     }
