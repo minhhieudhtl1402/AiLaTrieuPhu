@@ -37,11 +37,13 @@ class MainActivity : AppCompatActivity() {
 
                 val tv_ok = dialog.findViewById<TextView>(R.id.tv_ok)
                 tv_ok.setOnClickListener {
+                    dialog.dismiss()
                     MediaManager.start(this,R.raw.gofind)
                     MediaManager.mMediaPlayer.setOnCompletionListener {
                         val intent = Intent(this, PlayActivity::class.java)
                         MediaManager.stop()
                         startActivity(intent)
+
                     }
 
                 }
